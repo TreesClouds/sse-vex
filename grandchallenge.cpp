@@ -150,27 +150,28 @@ int main() {
   wait(1, seconds);
 
   // Phase 1: To Ramp
-  // Drivetrain.driveFor(forward, 36, inches);
-  // Drivetrain.turnFor(right, 85, degrees); 
-  // Drivetrain.driveFor(forward, 282, inches);
-  // stickToWall(50);
-  // Drivetrain.driveFor(forward, 144, inches);
-  // stickToWall(50);
-  // Drivetrain.driveFor(forward, 192, inches);
-  // Drivetrain.turnFor(right, 180, degrees);
-  // stickBackwards(30);
-  // driveUntilBump(12);
-  // Drivetrain.turnFor(right, 90, degrees);
-  // Drivetrain.turnFor(right, 180, degrees);
-  // stickBackwards(30);
-  // Drivetrain.driveFor(forward, 36, inches);
-  // Drivetrain.turnFor(left, 90, degrees);
-  // stickToWall(30);
-  // Drivetrain.driveFor(forward, 18*12, inches);
-  // stickToWall(50);
+  Drivetrain.driveFor(forward, 36, inches);
+  Drivetrain.turnFor(right, 85, degrees); 
+  Drivetrain.driveFor(forward, 282, inches);
+  stickToWall(50);
+  Drivetrain.driveFor(forward, 144, inches);
+  stickToWall(50);
+  Drivetrain.driveFor(forward, 192, inches);
+  Drivetrain.turnFor(right, 180, degrees);
+  stickBackwards(30);
+  
+  // Phase 2: Ramp
+  driveUntilBump(12);
+  Drivetrain.turnFor(left, 90, degrees);
+  stickBackwards(30);
+  Drivetrain.driveFor(forward, 36, inches);
+  Drivetrain.turnFor(left, 90, degrees);
+  stickToWall(30);
+  Drivetrain.driveFor(forward, 18*12, inches);
+  
+  // Phase 3: 200 Hall, 300 Hall
+  stickToWall(50);
   stickToWall(20);
   Drivetrain.driveFor(reverse, 18*12, inches);
   stickBackwards(50);
-
-
 }
