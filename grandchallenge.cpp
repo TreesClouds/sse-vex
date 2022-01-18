@@ -35,7 +35,7 @@ void stickToWall(int inchesBeforeCheck, turnType wallDirection) {
   directionType driveDirection;
   directionType driveOpposite;
 
-  // Converts direction of wall to other corresponding variables
+  // Converts direction of wall to other corresponding values
   if (wallDirection == right) {
     driveDirection = forward;
     driveOpposite = reverse;
