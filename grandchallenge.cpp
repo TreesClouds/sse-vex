@@ -29,9 +29,6 @@ using namespace vex;
  */
 void stickToWall(int inchesBeforeCheck) {
 
-  Drivetrain.setDriveVelocity(40, percent);
-  Drivetrain.setTurnVelocity(4, percent);
-
   while(true) {
 
     // Wall Clearance Check #1 (rapidly checked distance sensor data)
@@ -107,9 +104,6 @@ void stickToWall(int inchesBeforeCheck) {
  * @param inchesBeforeCheck Inches to travel before final wall clearance confirmation 
  */
 void stickBackwards(int inchesBeforeCheck) {
-
-  Drivetrain.setDriveVelocity(40, percent);
-  Drivetrain.setTurnVelocity(4, percent);
 
   while(true) {
 
@@ -200,57 +194,95 @@ int main() {
   vexcodeInit();
   std::cout << "PROGRAM START" << std::endl;
   Drivetrain.setRotation(0, degrees);
+  Drivetrain.setDriveVelocity(40, percent);
+  Drivetrain.setTurnVelocity(4, percent);
   wait(1, seconds);
 
-  // // Phase 1: To Ramp
-  // Drivetrain.driveFor(forward, 36, inches);     // Drive out of classroom
-  // Drivetrain.turnFor(right, 87, degrees);       // Turn away from classroom
-  // Drivetrain.driveFor(forward, 292, inches);    // Drive across robot yard gate
-  // stickToWall(50);                              // Drive across 400 classroom wall, turn towards parking lot ramp
-  // Drivetrain.driveFor(forward, 144, inches);    // Drive across unwalled portion of parking lot ramp
-  // stickToWall(50);                              // Drive across walled portion of parking lot ramp, turn towards back of 400 classrooms
-  // Drivetrain.driveFor(forward, 192, inches);    // Drive across unwalled space towards ramp entrance
-  // Drivetrain.turnFor(right, 180, degrees);      // Face distance sensors towards left-side wall
-  // stickBackwards(30);                           // Drive across back of 400 classrooms, turn towards ramp entrance
+  // Phase 1: To Ramp
+  Drivetrain.driveFor(forward, 36, inches);     // Drive out of classroom
+  Drivetrain.turnFor(right, 87, degrees);       // Turn away from classroom
+  Drivetrain.driveFor(forward, 292, inches);    // Drive across robot yard gate
+  stickToWall(50);                              // Drive across 400 classroom wall, turn towards parking lot ramp
+  Drivetrain.driveFor(forward, 144, inches);    // Drive across unwalled portion of parking lot ramp
+  stickToWall(35);                              // Drive across walled portion of parking lot ramp, turn towards back of 400 classrooms
+  Drivetrain.driveFor(forward, 192, inches);    // Drive across unwalled space towards ramp entrance
+  Drivetrain.turnFor(right, 180, degrees);      // Face distance sensors towards left-side wall
+  stickBackwards(30);                           // Drive across back of 400 classrooms, turn towards ramp entrance
   
-  // // Phase 2: Ramp
-  // driveUntilBump(12);                           // Drive until first ramp wall detected
-  // Drivetrain.turnFor(left, 90, degrees);        // Face distance sensors towards left-side wall
-  // stickBackwards(30);                           // Drive across first (west-facing) portion of ramp
-  // Drivetrain.driveFor(forward, 20, inches);     // Drive from end of first to start of second portion of ramp
-  // Drivetrain.turnFor(left, 90, degrees);        // Face distance sensors towards right-side wall
-  // stickToWall(20);                              // Drive across second (east-facing) portion of ramp, turn towards hallway
-  // Drivetrain.driveFor(forward, 216, inches);    // Drive into the hallway entrance
+  // Phase 2: Ramp
+  driveUntilBump(12);                           // Drive until first ramp wall detected
+  Drivetrain.turnFor(left, 90, degrees);        // Face distance sensors towards left-side wall
+  stickBackwards(30);                           // Drive across first (west-facing) portion of ramp
+  Drivetrain.driveFor(forward, 20, inches);     // Drive from end of first to start of second portion of ramp
+  Drivetrain.turnFor(left, 90, degrees);        // Face distance sensors towards right-side wall
+  stickToWall(20);                              // Drive across second (east-facing) portion of ramp, turn towards hallway
+  Drivetrain.driveFor(forward, 216, inches);    // Drive into the hallway entrance
   
-  // // Phase 3: 200 Hall, 300 Hall
-  // stickToWall(45);                              // Drive across east-side hallway
-  // stickToWall(15);                              // Drive across 300 hallway, turn away from inside ramp
-  // Drivetrain.driveFor(reverse, 216, inches);    // Drive across unwalled space onto the inside ramp
-  // stickBackwards(50);                           // Drive across inside ramp
-  
-  Drivetrain.turnFor(right, 90, degrees);
-  driveUntilBump(5);
-  Drivetrain.turnFor(right, 180, degrees);
-  Drivetrain.setDriveVelocity(20, percent);
-  Drivetrain.driveFor(reverse, 5, inches);
+  // Phase 3: 200 Hall, 300 Hall
+  stickToWall(45);                              // Drive across east-side hallway
+  stickToWall(15);                              // Drive across 300 hallway, turn away from inside ramp
+  Drivetrain.driveFor(reverse, 216, inches);    // Drive across unwalled space onto the inside ramp
+  stickBackwards(50);                           // Drive across inside ramp
+  Drivetrain.turnFor(right, 90, degrees);       // Turn towards wall adjacent to 200 hall doorway
+  driveUntilBump(6);                            // Drive towards wall adjacent to 200 hall doorway
+  Drivetrain.turnFor(right, 180, degrees);      // Rotate wall to prepare to align to wall
+
+  Drivetrain.setDriveVelocity(20, percent);     // Slow down for accurate alignment
+  Drivetrain.driveFor(reverse, 6, inches);      // Reverses to set itself to 0 
+  Drivetrain.setDriveVelocity(40, percent);     // Set velocity back to regular speed
+
   wait(1, seconds);
-  DrivetrainInertial.setRotation(0, degrees);
+  DrivetrainInertial.setRotation(0, degrees);   // Reset rotation of inertial sensor
   wait(1, seconds);
-  Drivetrain.driveFor(forward, 5, inches);
-  Drivetrain.turnFor(right, 90, degrees);
-  stickBackwards(5);
-  Drivetrain.driveFor(forward, 60, inches);
+
+  Drivetrain.driveFor(forward, 5, inches);      // Drives away from wall
+  Drivetrain.turnFor(right, 90, degrees);       // Turn distance sensors towards wall
+  stickBackwards(7);                            // Drive across hallway and outside doorway
+  Drivetrain.driveFor(forward, 60, inches);     // Drive past anything that can be read by distance sensors 
   Drivetrain.setTurnVelocity(2, percent);
-  while (!frontDistance.isObjectDetected() || !backDistance.isObjectDetected()) {
-    while (Drivetrain.rotation() > 180) {
+  while (!Bumper.pressing()) {                  // Drives straight using given rotation until robot bumps into door
+    while (Drivetrain.rotation() < 178) {
+      Drivetrain.turn(right);
+    }
+    while (Drivetrain.rotation() > 178) {
       Drivetrain.turn(left);
     } 
     Drivetrain.stop();
-    while (Drivetrain.rotation() < 180) {
-      Drivetrain.turn(right);
-    }
     Drivetrain.stop();
     Drivetrain.driveFor(forward, 400, mm);
   }
 
+  //First Outside hallway
+  Drivetrain.setTurnVelocity(4, percent);
+  Drivetrain.driveFor(reverse, 7, inches);        
+  Drivetrain.turnFor(left, 90, degrees);         //Sets up for it to reverse
+  stickBackwards(6);                             //Reverses until no door is detected
+  Drivetrain.driveFor(forward, 12*12, inches);   //Drives inside past water fountain 
+  Drivetrain.turnFor(right, 180, degrees);       //Turns around so distance sensors read wall 
+  stickBackwards(30);
+  stickToWall(7);
+  Drivetrain.turnFor(right, 180, degrees);       //Last set of Doors to office-Turns around to set to 0
+  driveUntilBump(6);
+  Drivetrain.turnFor(right, 180, degrees);
+  Drivetrain.driveFor(reverse, 6, inches);       //Reverses to set to 180
+  wait(1, seconds);
+  DrivetrainInertial.setRotation(180, degrees);
+  wait(1, seconds);
+  Drivetrain.driveFor(forward, 18*12, inches);   //Forward until no door is detected 
+  while (!Bumper.pressing()) {                  // Drives straight using given rotation until robot bumps into door
+    while (Drivetrain.rotation() < 179) {
+      Drivetrain.turn(right);
+    }
+    while (Drivetrain.rotation() > 179) {
+      Drivetrain.turn(left);
+    } 
+    Drivetrain.stop();
+    Drivetrain.driveFor(forward, 400, mm);
+  }
+  Drivetrain.driveFor(reverse, 7, inches);       //Backs away from door then drives inside office 
+  Drivetrain.turnFor(left, 90, degrees);
+  stickBackwards(6);
+  Drivetrain.turnFor(right, 180, degrees);       //Turns around after it detects open walkway in office 
+  stickBackwards(50);
+  
 }
