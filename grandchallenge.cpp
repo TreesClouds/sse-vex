@@ -218,7 +218,7 @@ int main() {
   stickToWall(20);                              // Drive across second (east-facing) portion of ramp, turn towards hallway
   Drivetrain.driveFor(forward, 216, inches);    // Drive into the hallway entrance
   
-  // Phase 3: 200 Hall, 300 Hall
+  // Phase 3: 300 Hall
   stickToWall(45);                              // Drive across east-side hallway
   stickToWall(15);                              // Drive across 300 hallway, turn away from inside ramp
   Drivetrain.driveFor(reverse, 216, inches);    // Drive across unwalled space onto the inside ramp
@@ -228,11 +228,11 @@ int main() {
   Drivetrain.turnFor(right, 180, degrees);      // Rotate wall to prepare to align to wall
 
   Drivetrain.setDriveVelocity(20, percent);     // Slow down for accurate alignment
-  Drivetrain.driveFor(reverse, 6, inches);      // Reverses to set itself to 0 
+  Drivetrain.driveFor(reverse, 6, inches);      // Aligns robot to wall
   Drivetrain.setDriveVelocity(40, percent);     // Set velocity back to regular speed
 
   wait(1, seconds);
-  DrivetrainInertial.setRotation(0, degrees);   // Reset rotation of inertial sensor
+  DrivetrainInertial.setRotation(0, degrees);   // Reset rotation of inertial sensor to prepare to drive outside
   wait(1, seconds);
 
   Drivetrain.driveFor(forward, 5, inches);      // Drives away from wall
@@ -248,27 +248,26 @@ int main() {
       Drivetrain.turn(left);
     } 
     Drivetrain.stop();
-    Drivetrain.stop();
     Drivetrain.driveFor(forward, 400, mm);
   }
 
   //First Outside hallway
   Drivetrain.setTurnVelocity(4, percent);
   Drivetrain.driveFor(reverse, 7, inches);        
-  Drivetrain.turnFor(left, 90, degrees);         //Sets up for it to reverse
-  stickBackwards(6);                             //Reverses until no door is detected
-  Drivetrain.driveFor(forward, 12*12, inches);   //Drives inside past water fountain 
-  Drivetrain.turnFor(right, 180, degrees);       //Turns around so distance sensors read wall 
+  Drivetrain.turnFor(left, 90, degrees);        // Sets up for it to reverse
+  stickBackwards(6);                            // Reverses until no door is detected
+  Drivetrain.driveFor(forward, 12*12, inches);  // Drives inside past water fountain 
+  Drivetrain.turnFor(right, 180, degrees);      // Turns around so distance sensors read wall 
   stickBackwards(30);
   stickToWall(7);
-  Drivetrain.turnFor(right, 180, degrees);       //Last set of Doors to office-Turns around to set to 0
+  Drivetrain.turnFor(right, 180, degrees);      // Last set of Doors to office-Turns around to set to 0
   driveUntilBump(6);
   Drivetrain.turnFor(right, 180, degrees);
-  Drivetrain.driveFor(reverse, 6, inches);       //Reverses to set to 180
+  Drivetrain.driveFor(reverse, 6, inches);      // Aligns to wall
   wait(1, seconds);
   DrivetrainInertial.setRotation(180, degrees);
   wait(1, seconds);
-  Drivetrain.driveFor(forward, 18*12, inches);   //Forward until no door is detected 
+  Drivetrain.driveFor(forward, 18*12, inches);  // Forward until no door is detected 
   while (!Bumper.pressing()) {                  // Drives straight using given rotation until robot bumps into door
     while (Drivetrain.rotation() < 179) {
       Drivetrain.turn(right);
@@ -279,10 +278,10 @@ int main() {
     Drivetrain.stop();
     Drivetrain.driveFor(forward, 400, mm);
   }
-  Drivetrain.driveFor(reverse, 7, inches);       //Backs away from door then drives inside office 
+  Drivetrain.driveFor(reverse, 7, inches);       // Backs away from door then drives inside office 
   Drivetrain.turnFor(left, 90, degrees);
   stickBackwards(6);
-  Drivetrain.turnFor(right, 180, degrees);       //Turns around after it detects open walkway in office 
+  Drivetrain.turnFor(right, 180, degrees);       // Turns around after it detects open walkway in office 
   stickBackwards(50);
   
 }
