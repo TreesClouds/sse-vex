@@ -1,17 +1,16 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
-/*    Module:       main.cpp                                                  */
+/*    Module:       grandchallenge.cpp                                        */
 /*    Author:       C:\Users\169726                                           */
-/*    Created:      Fri Dec 10 2021                                           */
-/*    Description:  V5 project                                                */
+/*    Created:      Fri Jan 31 2022                                           */
+/*    Description:  Code for SSE Grand Challenge 2022                         */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
-// backDistance         distance      11              
-// Vision               vision        20              
+// backDistance         distance      11                         
 // frontDistance        distance      12              
 // Drivetrain           drivetrain    1, 2, 10, 3, 9  
 // ---- END VEXCODE CONFIGURED DEVICES ----
@@ -218,7 +217,7 @@ int main() {
   stickToWall(20);                              // Drive across second (east-facing) portion of ramp, turn towards hallway
   Drivetrain.driveFor(forward, 216, inches);    // Drive into the hallway entrance
   
-  // Phase 3: 300 Hall
+  // Phase 3: 300 Hall, 200 Hall
   stickToWall(45);                              // Drive across east-side hallway
   stickToWall(15);                              // Drive across 300 hallway, turn away from inside ramp
   Drivetrain.driveFor(reverse, 216, inches);    // Drive across unwalled space onto the inside ramp
@@ -235,12 +234,13 @@ int main() {
   DrivetrainInertial.setRotation(0, degrees);   // Reset rotation of inertial sensor to prepare to drive outside
   wait(1, seconds);
 
-  Drivetrain.driveFor(forward, 5, inches);      // Drives away from wall
+  Drivetrain.driveFor(forward, 5, inches);      // Drive away from wall
   Drivetrain.turnFor(right, 90, degrees);       // Turn distance sensors towards wall
   stickBackwards(7);                            // Drive across hallway and outside doorway
   Drivetrain.driveFor(forward, 60, inches);     // Drive past anything that can be read by distance sensors 
-  Drivetrain.setTurnVelocity(2, percent);
-  while (!Bumper.pressing()) {                  // Drives straight using given rotation until robot bumps into door
+  Drivetrain.setTurnVelocity(2, percent);       // Slow down turning for accuracy
+  
+  while (!Bumper.pressing()) {                  // Drive at 178 degrees relative to wall until robot bumps into door
     while (Drivetrain.rotation() < 178) {
       Drivetrain.turn(right);
     }
@@ -251,21 +251,21 @@ int main() {
     Drivetrain.driveFor(forward, 400, mm);
   }
 
-  //First Outside hallway
-  Drivetrain.setTurnVelocity(4, percent);
-  Drivetrain.driveFor(reverse, 7, inches);        
-  Drivetrain.turnFor(left, 90, degrees);        // Sets up for it to reverse
-  stickBackwards(6);                            // Reverses until no door is detected
-  Drivetrain.driveFor(forward, 12*12, inches);  // Drives inside past water fountain 
-  Drivetrain.turnFor(right, 180, degrees);      // Turns around so distance sensors read wall 
-  stickBackwards(30);
-  stickToWall(7);
-  Drivetrain.turnFor(right, 180, degrees);      // Last set of Doors to office-Turns around to set to 0
-  driveUntilBump(6);
-  Drivetrain.turnFor(right, 180, degrees);
-  Drivetrain.driveFor(reverse, 6, inches);      // Aligns to wall
+  // Phase 4: 100 Hall, Office
+  Drivetrain.setTurnVelocity(4, percent);       // Speed up turning because of less need for accuracy
+  Drivetrain.driveFor(reverse, 7, inches);      // Back away from door
+  Drivetrain.turnFor(left, 90, degrees);        // Face sensors towards door
+  stickBackwards(6);                            // Drive along doorway until past door
+  Drivetrain.driveFor(forward, 12*12, inches);  // Drive into hallway
+  Drivetrain.turnFor(right, 180, degrees);      // Face sensors towards left wall
+  stickBackwards(30);                           // Drive along east-side portion of hallway
+  stickToWall(7);                               // Drive through 100 hall until office-facing doors detected
+  Drivetrain.turnFor(right, 180, degrees);      // Turn towards lockers for robot alignment
+  driveUntilBump(6);                            // Drive until robot bumps into lockers
+  Drivetrain.turnFor(right, 180, degrees);      // Turn away from wall
+  Drivetrain.driveFor(reverse, 6, inches);      // Back to align to wall
   wait(1, seconds);
-  DrivetrainInertial.setRotation(180, degrees);
+  DrivetrainInertial.setRotation(180, degrees); // Reset rotation of inertial sensor to prepare to drive outside
   wait(1, seconds);
   Drivetrain.driveFor(forward, 18*12, inches);  // Forward until no door is detected 
   while (!Bumper.pressing()) {                  // Drives straight using given rotation until robot bumps into door
@@ -279,9 +279,9 @@ int main() {
     Drivetrain.driveFor(forward, 400, mm);
   }
   Drivetrain.driveFor(reverse, 7, inches);       // Backs away from door then drives inside office 
-  Drivetrain.turnFor(left, 90, degrees);
-  stickBackwards(6);
+  Drivetrain.turnFor(left, 90, degrees);         // Face sensors towards door
+  stickBackwards(6);                             // Drive along doorway until past door
   Drivetrain.turnFor(right, 180, degrees);       // Turns around after it detects open walkway in office 
-  stickBackwards(50);
+  stickBackwards(50);                            // Drive along office hallway until in center of office
   
 }
